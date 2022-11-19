@@ -14,6 +14,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.awt.desktop.SystemEventListener;
+import java.net.NoRouteToHostException;
+import java.net.UnknownHostException;
 import java.util.*;
 
 @Service
@@ -477,7 +479,6 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
        HttpEntity<?> request = new HttpEntity<>(headers);
        ResponseEntity<String> response;
-       System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
        try {
            response = restTemplate.exchange(
                    resourceUrl,
@@ -485,6 +486,12 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                    request,
                    String.class
            );
+       } catch (NoRouteToHostException | UnknownHostException e) {
+
+           loyaltyCircuitBreaker.requestFailure();
+           System.out.println(e);
+           throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
+
        } catch (Exception e) {
 
            loyaltyCircuitBreaker.requestFailure();
