@@ -39,4 +39,12 @@ public class ErrorController {
 
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse runtimeException(RuntimeException e) {
+
+        return new ErrorResponse(e.getMessage());
+
+    }
+
 }
