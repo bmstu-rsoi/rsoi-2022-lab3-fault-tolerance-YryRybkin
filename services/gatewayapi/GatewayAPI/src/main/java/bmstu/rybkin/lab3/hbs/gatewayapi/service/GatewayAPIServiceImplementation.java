@@ -494,7 +494,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
            if ((e instanceof NoRouteToHostException) || (e instanceof UnknownHostException)) {
                throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
            }
-           throw e;
+           throw new RuntimeException(e.getMessage());
 
        }
 
