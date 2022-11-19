@@ -1,5 +1,6 @@
 package bmstu.rybkin.lab3.hbs.gatewayapi.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoyaltyInfoResponse {
 
     @Pattern(regexp = "^(BRONZE|SILVER|GOLD)$",

@@ -2,7 +2,9 @@ package bmstu.rybkin.lab3.hbs.gatewayapi.webcontroller;
 
 import bmstu.rybkin.lab3.hbs.gatewayapi.models.ErrorResponse;
 import io.swagger.v3.oas.annotations.Hidden;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,7 +22,10 @@ public class ErrorController {
     @ExceptionHandler(HttpServerErrorException.class)
     public ResponseEntity<String> serviceUnavailable(HttpServerErrorException e) {
 
-        return new ResponseEntity<String>("{ \"message\" : \"" + e.getStatusText() + "\" }", e.getStatusCode());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>("{ \"message\" : \"" + e.getStatusText() + "\" }", headers, e.getStatusCode());
+
 
     }
 

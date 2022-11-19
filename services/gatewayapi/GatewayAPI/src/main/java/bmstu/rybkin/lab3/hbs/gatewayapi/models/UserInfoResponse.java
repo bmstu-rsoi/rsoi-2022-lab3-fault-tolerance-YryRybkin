@@ -1,6 +1,8 @@
 package bmstu.rybkin.lab3.hbs.gatewayapi.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,11 +12,15 @@ public class UserInfoResponse {
 
     private final List<ReservationResponse> reservations;
 
+
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
     private final LoyaltyInfoResponse loyalty;
+
 
     public UserInfoResponse(List<ReservationResponse> reservations, LoyaltyInfoResponse loyalty) {
         this.reservations = reservations;
         this.loyalty = loyalty;
+
     }
 
     public List<ReservationResponse> getReservations() {

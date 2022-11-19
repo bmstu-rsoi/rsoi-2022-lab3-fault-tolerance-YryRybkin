@@ -2,6 +2,7 @@ package bmstu.rybkin.lab3.hbs.gatewayapi.webcontroller;
 
 import bmstu.rybkin.lab3.hbs.gatewayapi.models.*;
 import bmstu.rybkin.lab3.hbs.gatewayapi.service.GatewayAPIService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

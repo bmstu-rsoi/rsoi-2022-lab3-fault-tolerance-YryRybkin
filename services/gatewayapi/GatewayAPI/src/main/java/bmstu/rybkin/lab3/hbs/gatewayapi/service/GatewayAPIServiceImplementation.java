@@ -431,12 +431,12 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
         } catch (HttpServerErrorException | HttpClientErrorException e) {
 
             System.out.println(e);
-            return new UserInfoResponse(reservationResponses, null);
+            return new UserInfoResponse(reservationResponses, new LoyaltyInfoResponse());
 
         } catch (ResourceAccessException e) {
 
             System.out.println(e);
-            return new UserInfoResponse(reservationResponses, null);
+            return new UserInfoResponse(reservationResponses, new LoyaltyInfoResponse());
 
         }
 
@@ -510,7 +510,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
         if (paymentCircuitBreaker.getState() != State.CLOSED) {
 
-            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Payment service is unavailable");
+            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Payment Service unavailable");
 
         }
 
@@ -523,10 +523,18 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                     request,
                     String.class
             );
-        } catch (Exception e) {
+        } catch (HttpClientErrorException e){
 
             paymentCircuitBreaker.requestFailure();
+            System.out.println("Client error");
+            System.out.println(e);
             throw e;
+
+        } catch (RestClientException e) {
+
+            paymentCircuitBreaker.requestFailure();
+            System.out.println(e);
+            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Payment Service unavailable");
 
         }
 
@@ -552,10 +560,18 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                     request,
                     String.class
             );
-        } catch (Exception e) {
+        } catch (HttpClientErrorException e){
 
             reservationCircuitBreaker.requestFailure();
+            System.out.println("Client error");
+            System.out.println(e);
             throw e;
+
+        } catch (RestClientException e) {
+
+            reservationCircuitBreaker.requestFailure();
+            System.out.println(e);
+            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Reservation Service unavailable");
 
         }
 
@@ -564,10 +580,10 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
     }
 
-    private PaymentInfo getPaymentInfo(UUID paymenUid) {
+    private PaymentInfo getPaymentInfo(UUID paymentUid) {
 
         String resourceUrl = PAYMENTBASEURL +
-                String.format("/%s", paymenUid.toString());
+                String.format("/%s", paymentUid.toString());
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<String> response = noBodyRestTemplateExchangePayment(resourceUrl, HttpMethod.GET);
 
