@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.awt.desktop.SystemEventListener;
 import java.util.*;
 
 @Service
@@ -476,6 +477,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
        HttpEntity<?> request = new HttpEntity<>(headers);
        ResponseEntity<String> response;
+       System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
        try {
            response = restTemplate.exchange(
                    resourceUrl,
@@ -486,7 +488,8 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
        } catch (Exception e) {
 
            loyaltyCircuitBreaker.requestFailure();
-           throw new ResourceAccessException("Loyalty Service unavailable");
+           System.out.println(e);
+           throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
 
        }
 

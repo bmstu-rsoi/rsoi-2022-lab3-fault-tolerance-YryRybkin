@@ -47,4 +47,11 @@ public class ErrorController {
 
     }
 
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse exception(Exception e) {
+
+        return new ErrorResponse(e.getMessage());
+
+    }
+
 }
