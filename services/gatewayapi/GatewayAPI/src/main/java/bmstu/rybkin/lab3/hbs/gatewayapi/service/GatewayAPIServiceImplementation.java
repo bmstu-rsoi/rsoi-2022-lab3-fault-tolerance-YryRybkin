@@ -486,7 +486,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
        } catch (Exception e) {
 
            loyaltyCircuitBreaker.requestFailure();
-           throw e;
+           throw new ResourceAccessException("Loyalty Service unavailable");
 
        }
 

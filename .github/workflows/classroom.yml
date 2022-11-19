@@ -38,8 +38,8 @@ jobs:
         timeout-minutes: 10
         run: docker compose build
 
-      - name: Wait 30s for App To Deploy
-        run: sleep 30s
+      - name: Wait 10s for App To Deploy
+        run: sleep 10s
         shell: bash
 
       - name: Run containers
