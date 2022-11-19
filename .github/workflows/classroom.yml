@@ -48,7 +48,7 @@ jobs:
           docker compose up -d
           ./scripts/wait-script.sh
         env:
-          WAIT_PORTS: gateway:8080,reservation:8070,payment:8060,loyalty:8050
+          WAIT_PORTS: 8080,8070,8060,8050
 
       # TODO setup variant, service and port
 
