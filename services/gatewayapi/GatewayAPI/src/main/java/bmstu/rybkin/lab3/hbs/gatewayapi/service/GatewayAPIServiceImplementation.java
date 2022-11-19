@@ -279,6 +279,8 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
         ResponseEntity<String> loyaltyResponse;
         try {
             loyaltyResponse = noBodyRestTemplateExchangeLoyalty(resourceUrl, headers, HttpMethod.GET);
+        } catch (ResourceAccessException e) {
+            throw new ResourceAccessException("Loyalty Service unavailable");
         } catch (Exception e) {
 
             rollbackReservation(reservationServiceResponse.getReservationUid(), username);
@@ -468,7 +470,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
         if (loyaltyCircuitBreaker.getState() != State.CLOSED) {
 
-            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty service is unavailable");
+            throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
 
         }
 
