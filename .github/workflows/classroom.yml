@@ -17,11 +17,25 @@ jobs:
 
       - uses: docker/setup-buildx-action@v2
 
-      # TODO build and run unit tests
+      - name: Maven Package API Gateway
+        run: mvn -f ./services/gatewayapi/GatewayAPI/pom.xml -B clean package -DskipTests
+        
+      - name: Maven Package ReservationApplication
+        run: mvn -f ./services/reservation_app/ReservationApplication/pom.xml -B clean package -DskipTests
+        
+      - name: Maven Package PaymentApplication
+        run: mvn -f ./services/payment_app/PaymentApplication/pom.xml -B clean package -DskipTests
+        
+      - name: Maven Package LoyaltyApplication
+        run: mvn -f ./services/loyalty_app/LoyaltyApplication/pom.xml -B clean package -DskipTests
 
       - name: Build images
         timeout-minutes: 10
         run: docker compose build
+
+      - name: Wait 30s for App To Deploy
+        run: sleep 30s
+        shell: bash
 
       - name: Run containers
         timeout-minutes: 5
@@ -37,9 +51,9 @@ jobs:
         timeout-minutes: 5
         run: ./scripts/test-script.sh
         env:
-          VARIANT: <variant>
-          SERVICE_NAME: <your service name>
-          PORT_NUMBER: <port number>
+          VARIANT: v2
+          SERVICE_NAME: loyalty
+          PORT_NUMBER: 8050
 
       - uses: education/autograding@v1
         id: autograder
