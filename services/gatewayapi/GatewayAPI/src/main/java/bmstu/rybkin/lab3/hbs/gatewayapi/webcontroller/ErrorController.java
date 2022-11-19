@@ -23,10 +23,17 @@ public class ErrorController {
 
     }
 
-//    @ExceptionHandler(ConnectException.class)
-    @ExceptionHandler(ResourceAccessException.class)
+    @ExceptionHandler(ConnectException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ErrorResponse serviceUnavailable(ConnectException e) {
+
+        return new ErrorResponse(e.getMessage());
+
+    }
+
+    @ExceptionHandler(ResourceAccessException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorResponse serviceUnavailable_2(ConnectException e) {
 
         return new ErrorResponse(e.getMessage());
 
