@@ -489,7 +489,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
            loyaltyCircuitBreaker.requestFailure();
            System.out.println(e);
-           throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
+           throw new RuntimeException(e.getMessage());
 
        }
 
