@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -412,6 +413,11 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
             reservationResponses = null;
             System.out.println(e);
 
+        } catch (ResourceAccessException e) {
+
+            reservationResponses = null;
+            System.out.println(e);
+
         }
 
         ResponseEntity<String> loyalty;
@@ -421,9 +427,13 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
             loyalty = getLoyaltyInfo(username);
         } catch (HttpServerErrorException | HttpClientErrorException e) {
 
-            loyaltyInfoResponse = null;
             System.out.println(e);
-            return new UserInfoResponse(reservationResponses, loyaltyInfoResponse);
+            return new UserInfoResponse(reservationResponses, null);
+
+        } catch (ResourceAccessException e) {
+
+            System.out.println(e);
+            return new UserInfoResponse(reservationResponses, null);
 
         }
 
