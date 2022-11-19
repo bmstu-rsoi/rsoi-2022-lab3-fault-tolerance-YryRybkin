@@ -21,7 +21,7 @@ jobs:
           java-version: 1.17
 
       - name: Maven Package API Gateway
-        run: mvn -f ./services/gatewayapi/GatewayAPI/pom.xml -P prod -B clean package -DskipTests
+        run: mvn -f ./services/gatewayapi/GatewayAPI/pom.xml -P -prod local -B clean package -DskipTests
         
       - name: Maven Package ReservationApplication
         run: mvn -f ./services/reservation_app/ReservationApplication/pom.xml -P prod -B clean package -DskipTests

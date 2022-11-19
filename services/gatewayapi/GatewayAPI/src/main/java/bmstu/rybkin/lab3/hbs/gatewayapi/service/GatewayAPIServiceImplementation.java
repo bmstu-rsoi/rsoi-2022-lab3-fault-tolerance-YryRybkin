@@ -486,17 +486,11 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                    request,
                    String.class
            );
-       } catch (NoRouteToHostException | UnknownHostException e) {
-
-           loyaltyCircuitBreaker.requestFailure();
-           System.out.println(e);
-           throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
-
        } catch (Exception e) {
 
            loyaltyCircuitBreaker.requestFailure();
            System.out.println(e);
-           throw new RuntimeException(e.getMessage());
+           throw e;
 
        }
 
