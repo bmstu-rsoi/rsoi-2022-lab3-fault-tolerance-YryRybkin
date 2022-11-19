@@ -8,10 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 
 import java.awt.desktop.SystemEventListener;
 import java.io.IOException;
@@ -487,14 +484,18 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                    request,
                    String.class
            );
-       } catch (Exception e) {
+       } catch (HttpClientErrorException e) {
+
+           loyaltyCircuitBreaker.requestFailure();
+           System.out.println("Client error");
+           System.out.println(e);
+           throw e;
+
+       } catch (RestClientException e) {
 
            loyaltyCircuitBreaker.requestFailure();
            System.out.println(e);
-           if ((e instanceof NoRouteToHostException) || (e instanceof UnknownHostException)) {
-               throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
-           }
-           throw new RuntimeException(e.getMessage());
+           throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
 
        }
 
