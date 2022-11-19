@@ -14,6 +14,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.awt.desktop.SystemEventListener;
+import java.io.IOException;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -490,6 +491,9 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
            loyaltyCircuitBreaker.requestFailure();
            System.out.println(e);
+           if ((e instanceof NoRouteToHostException) || (e instanceof UnknownHostException)) {
+               throw new HttpServerErrorException(HttpStatus.SERVICE_UNAVAILABLE, "Loyalty Service unavailable");
+           }
            throw e;
 
        }

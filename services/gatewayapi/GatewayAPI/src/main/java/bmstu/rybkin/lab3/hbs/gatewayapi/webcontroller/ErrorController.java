@@ -11,6 +11,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
 
 @Hidden
 @RestControllerAdvice
@@ -49,6 +50,13 @@ public class ErrorController {
 
     @ExceptionHandler(Exception.class)
     public ErrorResponse exception(Exception e) {
+
+        return new ErrorResponse(e.getMessage());
+
+    }
+
+    @ExceptionHandler(NoRouteToHostException.class)
+    public ErrorResponse exception(NoRouteToHostException e) {
 
         return new ErrorResponse(e.getMessage());
 
