@@ -386,6 +386,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                 @Override
                 public void run() {
 
+                    System.out.println("Scheduled function");
                     String resourceUrl = LOYALTYBASEURL + "/me";
                     HttpHeaders headers = new HttpHeaders();
                     headers.set(X_USER_NAME, username);
@@ -400,6 +401,7 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
 
                 }
             });
+            scheduleRunner.startTasks();
 
         }
 
