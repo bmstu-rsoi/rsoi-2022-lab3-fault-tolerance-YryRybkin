@@ -394,7 +394,13 @@ public class GatewayAPIServiceImplementation implements GatewayAPIService {
                         noBodyRestTemplateExchangeLoyalty(resourceUrl, headers, HttpMethod.DELETE);
                     } catch (HttpServerErrorException e) {
 
-                        throw e;
+                        System.out.println(e);
+                        return;
+
+                    } catch (RestClientException e) {
+
+                        System.out.println(e);
+                        return;
 
                     }
                     scheduleRunner.taskComplete();
